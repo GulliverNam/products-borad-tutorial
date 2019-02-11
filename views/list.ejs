@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <title>Bootstrap Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>상품테이블</h2>
+
+    <a href="/products/new">추가하기</a>
+    <a href="/main">메인으로</a>
+    <br>
+    <br>
+    <p>상품테이블 목록입니다.</p>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>아이디</th>
+            <th>상품명</th>
+            <th>넘버</th>
+            <th>분류</th>
+            <th>삭제</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <% data.forEach(function (item,index){ %>
+            <tr>
+                <td>
+                    <%= item.id %>
+                </td>
+                <td>
+                    <form action="/products/<%= item.id %>" method="get">
+                        <button type="submit"><%= item.name %></button>
+                        <!--<input type="submit" id="detail" class="btn btn-success" value="<%= item.name %>">-->
+                    </form>
+                </td>
+                <td>
+                    <%= item.modelnumber %>
+                </td>
+                <td>
+                    <%= item.series %>
+                </td>
+
+                <td>
+                    <form action="/products/<%= item.id %>?_method=DELETE" method="post">
+                        <input type="submit" class="btn btn-success" value="삭제">
+                    </form>
+                </td>
+            </tr>
+        <% })%>
+        </tbody>
+    </table>
+</div>
+
+
+<br>
+<br>
+
+
+<div class="container">
+    <ul class="pager">
+
+
+
+        <%
+        let curSet = paging.curSet
+        let endPage = paging.endPage
+        let startPage = paging.startPage
+        let totalSet = paging.totalSet
+        let totalPage = paging.totalPage
+        let page_list_size = paging.Page_per_set
+        let page_size = paging.Contents_per_page
+        let curPage = paging.curPage
+        %>
+
+
+        <% if(curSet > 1){ %>
+
+            <li value=(startPage-1) class="previous">
+                <a href='/products?cur=<%= (startPage-1) %>'>이전페이지</a>
+            </li>
+
+        <% } %>
+
+
+        <% for(let i = startPage; i <= endPage; i++)
+        {
+            if(i > totalPage){break;}
+        if(i == curPage){ %>
+            <li value=<%= i %> class='' >
+                <a href='/products?cur=<%= i %>'>
+                    <%= i %>
+                </a>
+            </li>
+
+        <% }else{ %>
+
+            <li value=<%= i %> class='active' >
+                <a href='/products?cur=<%= i %>'>
+                    <%= i %>
+                </a>
+            </li>
+
+        <% } %>
+
+        <% } %>
+
+        <% if(curSet < totalSet){ %>
+            <li value=( endPage + 1) class="next">
+                <a href='/products?cur=<%= ( endPage + 1) %>'>다음페이지</a>
+            </li>
+        <% } %>
+
+    </ul>
+</div>
+
+<br>
+<br>
+
+</body>
+
+</html>
